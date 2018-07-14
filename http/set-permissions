@@ -1,0 +1,19 @@
+#!/bin/bash
+
+echo " ----------- Check if usr1 exists and create it if needed ----------- " 
+USR1=$(grep usr1 /etc/passwd)
+if [ "$USR1" == "" ]; then 
+    useradd usr1
+fi
+ 
+echo " ----------- Add user folder permissions ----------- " 
+chown -R usr1:www-data $WORKDIR
+if [ ! -d /home/usr1 ]; then 
+    mkdir /home/usr1
+fi
+chown usr1 /home/usr1/ 
+
+echo " ----------- Add $WORKDIR permissions ----------- " 
+find $WORKDIR -type d -exec chmod 775 {} \; 
+find $WORKDIR -type d -exec chmod g+s {} \; 
+find $WORKDIR -type f -exec chmod 664 {} \; 

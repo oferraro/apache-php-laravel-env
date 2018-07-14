@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  lamp1-web:
+    container_name: lamp1-http
+    build:
+      context: ./http/
+      dockerfile: Dockerfile
+    env_file:
+      - ./conf/.env
+    ports: 
+      - "8080:80"
+    volumes: 
+      - ./app:/var/www/html/
+    links:
+      - lamp1-mariadb
+    depends_on:
+      - lamp1-mariadb
+## Mysql Server 
+  lamp1-mariadb:
+    container_name: lamp1-mysql
+    image: mariadb
+    volumes:
+      - lamp1-db:/var/lib/mysql/data
+    env_file:
+      - ./conf/.env
+## End of Mysql Server
+volumes:
+  lamp1-db: # This is for mariadb 

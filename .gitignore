@@ -1,0 +1,4 @@
+.dockerignore
+app/*
+conf/.env
+

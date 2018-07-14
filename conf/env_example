@@ -1,0 +1,8 @@
+MYSQL_HOST=lamp1-mariadb
+MYSQL_ROOT_PASSWORD=genpasswd
+MYSQL_USER=genusr
+MYSQL_PASSWORD=genpasswd
+MYSQL_DATABASE=gendb
+
+APP_FOLDER=yourappfolder
+WORK_DIR=/var/www/html
