@@ -15,16 +15,22 @@
 ### **Run** the machines: ### 
 `docker-compose up`
 
+### Next commands (Set permissions, Install dev tools and rebuild Database)can be done with the Make File, there are grouped in one command: ###
+`make rebuild_db_and_conf`
+
+### Next are optional commands (no need it): ###
+
+### In order to see all Make available commands just run make: ###
+`make`
+
 ### **Excecute** this for fix/set permissions: ### 
-`docker exec -it lamp1-http /usr/local/bin/set-permissions`
+`docker exec lamp1-http /usr/local/bin/set-permissions`
 
 ### Excecute this for **install** composer and other needed **dev tools**: (supose we use Laravel, so create .env, call migrate, etc, can be commented if not needed) ### 
-`docker exec  lamp1-http /usr/local/bin/install-dev-tools`
+`docker exec lamp1-http /usr/local/bin/install-dev-tools`
 
 ### Excecute this for **recreate database** ### 
-`docker exec -it lamp1-http`
-
-`/usr/local/bin/rebuild-db`
+`docker exec lamp1-http /usr/local/bin/rebuild-db`
 
 ### **Access** to the machine **bash** (if need do something in the machine): ### 
 `docker exec -it lamp1-http bash`
