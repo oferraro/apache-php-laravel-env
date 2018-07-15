@@ -21,6 +21,7 @@ sed -i "s/DB_HOST=.*/DB_HOST=$MYSQL_HOST/" $WORKDIR/$APP_FOLDER/.env
 sed -i "s/DB_DATABASE=.*/DB_DATABASE=$MYSQL_DATABASE/g" $WORKDIR/$APP_FOLDER/.env
 sed -i "s/DB_USERNAME=.*/DB_USERNAME=$MYSQL_USER/" $WORKDIR/$APP_FOLDER/.env
 sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$MYSQL_PASSWORD/" $WORKDIR/$APP_FOLDER/.env
+sed -i "s#.*DocumentRoot.*#DocumentRoot $WORKDIR/$APP_FOLDER/public#g" /etc/apache2/sites-enabled/000-default.conf
 
 ## Leave this at the end or following commands will not excecute
 echo "--------- Reload Apache ---------" 
