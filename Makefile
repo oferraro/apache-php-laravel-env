@@ -1,6 +1,9 @@
 include conf/.env
 WEB_ID=lamp1-http
+WEB_IMG_ID=lamp1-web
 MYSQL_ID=lamp1-mysql
+MYSQL_IMG_ID=lamp1-mariadb
+VOLUME_DB=lamp1-db
 
 build: ##@ Build the images
 	docker-compose build
@@ -17,9 +20,9 @@ upd: ##@ Start the images (daemon mode)
 stop: ##@ Stop image
 	docker-compose stop
 
-delete: ##@ Delete images
-	docker rm $(WEB_ID)
-	docker rm $(MYSQL_ID)
+delete: ##@ Delete apache-laravel images, containers and volumes
+	@chmod u+x ./delete-images.sh
+	@exec ./delete-images.sh $(WEB_ID) $(WEB_IMG_ID) $(MYSQL_ID) $(MYSQL_IMG_ID) $(VOLUME_DB)
 
 logs: ##@ show logs (tail)
 	docker logs -t $(WEB_ID)
