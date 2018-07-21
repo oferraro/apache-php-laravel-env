@@ -3,7 +3,7 @@
 echo "--------- Apt-get update ---------"
 apt-get update
 echo "--------- Ibstalling sudo vim ---------"
-apt-get -y install sudo vim 
+apt-get -y install sudo vim mysql-client wget
 
 echo "--------- Installing composer ---------"
 /usr/bin/php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
@@ -23,6 +23,19 @@ sed -i "s/DB_USERNAME=.*/DB_USERNAME=$MYSQL_USER/" $WORKDIR/$APP_FOLDER/.env
 sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$MYSQL_PASSWORD/" $WORKDIR/$APP_FOLDER/.env
 sed -i "s#.*DocumentRoot.*#DocumentRoot $WORKDIR/$APP_FOLDER/public#g" /etc/apache2/sites-enabled/000-default.conf
 
+apt-get install -y apt-transport-https lsb-release ca-certificates
+if [ ! -f /etc/apt/trusted.gpg.d/php.gpg ]; then 
+    wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+fi
+if [ ! -f /etc/apt/sources.list.d/php.list ]; then
+    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+fi
+
+PHP_VERSION=7.3
+apt-get update 
+apt-get -y install php$PHP_VERSION php$PHP_VERSION-mbstring php$PHP_VERSION-xml php$PHP_VERSION-zip php$PHP_VERSION-mysql php$PHP_VERSION-bcmath php$PHP_VERSION-gd php$PHP_VERSION-common php$PHP_VERSION-curl php$PHP_VERSION-intl
+
 ## Leave this at the end or following commands will not excecute
 echo "--------- Reload Apache ---------" 
 exec /usr/sbin/apachectl -k graceful
+

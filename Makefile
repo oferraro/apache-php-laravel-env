@@ -42,6 +42,9 @@ rebuild_db_and_conf: ##@ Set permissions, Install dev tools and rebuild db
 	docker exec $(WEB_ID) /usr/local/bin/install-dev-tools
 	docker exec $(WEB_ID) /usr/local/bin/rebuild-db
 
+install_dev_tools: ##@ install vim mysql-client, composer, and other developer tools
+	docker exec $(WEB_ID) /usr/local/bin/install-dev-tools
+
 .DEFAULT_GOAL := help
 
 help:

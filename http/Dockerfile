@@ -11,7 +11,8 @@ COPY rebuild-db set-permissions /usr/local/bin/
 RUN chmod u+x /usr/local/bin/httpd-foreground \
 	/usr/local/bin/set-permissions \
 	/usr/local/bin/install-dev-tools /usr/local/bin/rebuild-db \
-	&& rm /etc/apache2/sites-enabled/000-default.conf 
+	&& rm /etc/apache2/sites-enabled/000-default.conf && \
+	a2enmod rewrite
 
 COPY 000-default.conf /etc/apache2/sites-enabled/000-default.conf
 
