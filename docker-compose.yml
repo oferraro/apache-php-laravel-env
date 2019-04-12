@@ -20,6 +20,8 @@ services:
   lamp1-mariadb:
     container_name: lamp1-mysql
     image: mariadb
+    ports:
+      - "3307:3306"
     volumes:
       - lamp1-db:/var/lib/mysql/data
     env_file:
