@@ -3,6 +3,9 @@
 apt-get update
 apt-get -y install mysql-common mysql-client
 
+echo "Make a DB backup"
+$(/usr/bin/mysqldump -h $MYSQL_HOST -u root -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE > /tmp/dump-`date +"%Y-%m-%d_%H-%M-%S"`.sql);
+
 cd $WORK_DIR
 echo " ----------- Drop database if already exits ----------- " 
 DB_SHOW=$(/usr/bin/mysql -h $MYSQL_HOST -u root -p$MYSQL_ROOT_PASSWORD -e "show databases" | grep $MYSQL_DATABASE); 

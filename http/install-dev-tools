@@ -11,6 +11,23 @@ echo "--------- Installing composer ---------"
 /usr/bin/php composer-setup.php --install-dir=/bin --filename=composer
 /usr/bin/php -r "unlink('composer-setup.php');"
 
+# Download PHP repo certificates
+apt-get install -y apt-transport-https lsb-release ca-certificates
+if [ ! -f /etc/apt/trusted.gpg.d/php.gpg ]; then 
+    wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+fi
+# Download PHP repo for php7.3 installation
+if [ ! -f /etc/apt/sources.list.d/php.list ]; then
+    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+fi
+# Install php 7.3
+PHP_VERSION=7.3
+apt-get update 
+apt-get -y install php$PHP_VERSION php$PHP_VERSION-mbstring php$PHP_VERSION-xml php$PHP_VERSION-zip php$PHP_VERSION-mysql php$PHP_VERSION-bcmath php$PHP_VERSION-gd php$PHP_VERSION-common php$PHP_VERSION-curl php$PHP_VERSION-intl
+# Disable php7.0 and enable php7.3
+a2dismod php7.0
+a2enmod php$PHP_VERSION
+
 cd $WORKDIR/$APP_FOLDER/public/
 
 cp $WORKDIR/$APP_FOLDER/.env.example $WORKDIR/$APP_FOLDER/.env
@@ -22,21 +39,6 @@ sed -i "s/DB_DATABASE=.*/DB_DATABASE=$MYSQL_DATABASE/g" $WORKDIR/$APP_FOLDER/.en
 sed -i "s/DB_USERNAME=.*/DB_USERNAME=$MYSQL_USER/" $WORKDIR/$APP_FOLDER/.env
 sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=$MYSQL_PASSWORD/" $WORKDIR/$APP_FOLDER/.env
 sed -i "s#.*DocumentRoot.*#DocumentRoot $WORKDIR/$APP_FOLDER/public#g" /etc/apache2/sites-enabled/000-default.conf
-
-apt-get install -y apt-transport-https lsb-release ca-certificates
-if [ ! -f /etc/apt/trusted.gpg.d/php.gpg ]; then 
-    wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-fi
-if [ ! -f /etc/apt/sources.list.d/php.list ]; then
-    echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
-fi
-
-PHP_VERSION=7.3
-apt-get update 
-apt-get -y install php$PHP_VERSION php$PHP_VERSION-mbstring php$PHP_VERSION-xml php$PHP_VERSION-zip php$PHP_VERSION-mysql php$PHP_VERSION-bcmath php$PHP_VERSION-gd php$PHP_VERSION-common php$PHP_VERSION-curl php$PHP_VERSION-intl
-
-a2dismod php7.0
-a2enmod php$PHP_VERSION
 
 ## Leave this at the end or following commands will not excecute
 echo "--------- Reload Apache ---------" 
